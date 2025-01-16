@@ -7,6 +7,10 @@ public class CreatePollCommandHandler(IRepository<Poll> pollRepository) : IReque
 
     public async Task<CreatePollResponse> Handle(CreatePollCommand request, CancellationToken cancellationToken)
     {
+        var titleExists = await _pollRepository.AnyAsync(x => x.Title == request.Title, cancellationToken);
+        if (titleExists)
+            throw new Exception("Duplicate poll titles not possible");
+
         var response = await _pollRepository.AddAsync(request.Adapt<Poll>(), cancellationToken);
         return response.Adapt<CreatePollResponse>();
     }

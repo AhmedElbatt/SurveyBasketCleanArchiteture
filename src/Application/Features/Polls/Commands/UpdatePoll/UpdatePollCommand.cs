@@ -7,7 +7,16 @@ public class UpdatePollCommandHandler(IRepository<Poll> pollRepository) : IReque
 
     public async Task Handle(UpdatePollCommand request, CancellationToken cancellationToken)
     {
-        await _pollRepository.UpdateAsync(request.Adapt<Poll>(), cancellationToken);
+        var poll = await _pollRepository.GetByIdAsync(request.Id, cancellationToken);
+
+        if (poll == null)
+            throw new NullReferenceException($"Poll with Id: {request.Id} not found.");
+
+        var titleExists = await _pollRepository.AnyAsync(x => x.Title == request.Title, cancellationToken);
+        if (titleExists)
+            throw new Exception("Duplicate poll titles not possible");
+
+        await _pollRepository.UpdateAsync(request.Adapt(poll), cancellationToken);
     }
 }
 

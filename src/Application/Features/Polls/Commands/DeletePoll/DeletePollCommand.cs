@@ -1,5 +1,7 @@
-﻿namespace Application.Features.Polls.Commands.DeletePoll;
-public record DeletePollCommand(int PollId) : IRequest;
+﻿using Domain.Entities;
+
+namespace Application.Features.Polls.Commands.DeletePoll;
+public record DeletePollCommand(int Id) : IRequest;
 
 public class DeletePollCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<DeletePollCommand>
 {
@@ -7,7 +9,11 @@ public class DeletePollCommandHandler(IRepository<Poll> pollRepository) : IReque
 
     public async Task Handle(DeletePollCommand request, CancellationToken cancellationToken)
     {
-        var pollToDelete = await _pollRepository.GetByIdAsync(request.PollId, cancellationToken);
+        var pollToDelete = await _pollRepository.GetByIdAsync(request.Id, cancellationToken);
+
+        if (pollToDelete == null)
+            throw new NullReferenceException($"Poll with Id: {request.Id} not found.");
+
         await _pollRepository.DeleteAsync(pollToDelete, cancellationToken);
     }
 }

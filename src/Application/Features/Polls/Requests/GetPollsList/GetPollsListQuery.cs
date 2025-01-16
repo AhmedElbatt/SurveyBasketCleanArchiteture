@@ -7,7 +7,7 @@ public class GetPollsListQueryHandler(IRepository<Poll> pollRepository) : IReque
 
     public async Task<List<GetPollResponse>> Handle(GetPollsListQuery request, CancellationToken cancellationToken)
     {
-        var polls = await _pollRepository.ListAllAsync(cancellationToken);
+        var polls = await _pollRepository.GetListAsync(cancellationToken);
         return polls.Adapt<List<GetPollResponse>>();
     }
 }

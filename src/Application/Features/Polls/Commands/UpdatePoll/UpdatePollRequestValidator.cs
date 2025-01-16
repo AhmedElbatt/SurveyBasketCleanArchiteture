@@ -1,9 +1,9 @@
 ﻿using Application.Features.Polls.Commands.CreatePoll;
 
 namespace Application.Features.Polls.Commands.UpdatePoll;
-public class UpdatePollCommandValidator:AbstractValidator<UpdatePollCommand>
+public class UpdatePollRequestValidator:AbstractValidator<UpdatePollRequest>
 {
-    public UpdatePollCommandValidator()
+    public UpdatePollRequestValidator()
     {
         RuleFor(x => x.Title)
             .NotEmpty()
@@ -23,7 +23,7 @@ public class UpdatePollCommandValidator:AbstractValidator<UpdatePollCommand>
             .WithMessage("{PropertyName} must be greater than or equal start date");
     }
 
-    private bool HasValidDates(UpdatePollCommand command)
+    private bool HasValidDates(UpdatePollRequest command)
     {
         return command.EndsAt >= command.StartsAt;
     }

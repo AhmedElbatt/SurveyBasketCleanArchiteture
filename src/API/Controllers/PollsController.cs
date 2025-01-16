@@ -1,5 +1,6 @@
 ﻿using Application.Features.Polls.Commands.CreatePoll;
 using Application.Features.Polls.Commands.DeletePoll;
+using Application.Features.Polls.Commands.TogglePublish;
 using Application.Features.Polls.Commands.UpdatePoll;
 using Application.Features.Polls.Requests.GetPoll;
 using Application.Features.Polls.Requests.GetPollsList;
@@ -37,9 +38,16 @@ public class PollsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] UpdatePollCommand request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Update(int id, [FromBody] UpdatePollRequest request, CancellationToken cancellationToken)
     {
-        await _mediator.Send(request, cancellationToken);
+        await _mediator.Send(new UpdatePollCommand(id, request.Title, request.Summary, request.StartsAt, request.EndsAt), cancellationToken);
+        return NoContent();
+    }
+
+    [HttpPut("{id}/toggle-publish")]
+    public async Task<IActionResult> TogglePublish(int id, CancellationToken cancellationToken)
+    {
+        await _mediator.Send(new TogglePublishCommand(id), cancellationToken);
         return NoContent();
     }
 
