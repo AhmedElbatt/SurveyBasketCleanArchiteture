@@ -1,11 +1,17 @@
-﻿namespace Application.Features.Polls.Commands.CreatePoll;
+﻿using Application.Contracts.Persistance;
+using Domain.Entities;
+
+namespace Application.Features.Polls.Commands.CreatePoll;
 public record CreatePollCommand(string Title, string Summary, DateOnly StartsAt, DateOnly EndsAt) : IRequest<CreatePollResponse>;
 
-public class CreatePollCommandHandler : IRequestHandler<CreatePollCommand, CreatePollResponse>
+public class CreatePollCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<CreatePollCommand, CreatePollResponse>
 {
-    public Task<CreatePollResponse> Handle(CreatePollCommand request, CancellationToken cancellationToken)
+    private readonly IRepository<Poll> _pollRepository = pollRepository;
+
+    public async Task<CreatePollResponse> Handle(CreatePollCommand request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var response = await _pollRepository.AddAsync(request.Adapt<Poll>(), cancellationToken);
+        return response.Adapt<CreatePollResponse>();
     }
 }
 
