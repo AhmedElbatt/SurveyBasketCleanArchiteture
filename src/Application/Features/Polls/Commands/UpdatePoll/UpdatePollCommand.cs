@@ -12,7 +12,7 @@ public class UpdatePollCommandHandler(IRepository<Poll> pollRepository) : IReque
         if (poll == null)
             throw new NullReferenceException($"Poll with Id: {request.Id} not found.");
 
-        var titleExists = await _pollRepository.AnyAsync(x => x.Title == request.Title, cancellationToken);
+        var titleExists = await _pollRepository.AnyAsync(x => x.Title == request.Title && x.Id != request.Id, cancellationToken);
         if (titleExists)
             throw new Exception("Duplicate poll titles not possible");
 

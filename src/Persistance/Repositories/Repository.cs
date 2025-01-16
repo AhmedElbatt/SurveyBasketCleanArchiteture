@@ -45,7 +45,7 @@ public class Repository<T> : IRepository<T> where T : class
 
     public async Task<IEnumerable<T>> GetListAsync(CancellationToken cancellationToken = default)
     {
-        return await _dbSet.ToListAsync(cancellationToken);
+        return await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
@@ -72,8 +72,8 @@ public class Repository<T> : IRepository<T> where T : class
         }
 
         return orderBy != null
-               ? await orderBy(query).ToListAsync(cancellationToken)
-               : await query.ToListAsync(cancellationToken);
+               ? await orderBy(query).AsNoTracking().ToListAsync(cancellationToken)
+               : await query.AsNoTracking().ToListAsync(cancellationToken);
 
     }
 
