@@ -35,6 +35,7 @@ public static class ApplicationServiceRegistration
 
     private static IServiceCollection AddFluentValidationConfig(this IServiceCollection services)
     {
+        var assembly = typeof(ApplicationServiceRegistration).Assembly;
         services
             .AddFluentValidationAutoValidation()
             .AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());

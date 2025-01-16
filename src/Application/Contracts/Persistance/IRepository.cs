@@ -1,7 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Threading.Tasks;
-
-namespace Application.Contracts.Persistance;
+﻿namespace Application.Contracts.Persistance;
 public interface IRepository<T> where T : class
 {
     Task<T> GetByIdAsync(int id, CancellationToken cancellationToken);
