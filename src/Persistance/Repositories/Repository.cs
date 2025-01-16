@@ -5,73 +5,40 @@ namespace Persistance.Repositories;
 
 public class Repository<T> : IRepository<T> where T : class
 {
-    private readonly ApplicationDbContext _context;
-    private readonly DbSet<T> _dbSet;
+    protected readonly ApplicationDbContext _dbContext;
 
-    public Repository(ApplicationDbContext context)
+    public Repository(ApplicationDbContext dbContext)
     {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
-        _dbSet = _context.Set<T>();
+        _dbContext = dbContext;
     }
 
-    public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] includes)
+    public async Task<T> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        IQueryable<T> query = _dbSet;
-
-        foreach (var include in includes)
-        {
-            query = query.Include(include);
-        }
-
-        return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == id, cancellationToken);
+        return await _dbContext.Set<T>().FindAsync(id, cancellationToken);
     }
 
-    public async Task<IReadOnlyList<T>> GetAllAsync(CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] includes)
+    public async Task<IReadOnlyList<T>> ListAllAsync(CancellationToken cancellationToken)
     {
-        IQueryable<T> query = _dbSet;
-
-        foreach (var include in includes)
-        {
-            query = query.Include(include);
-        }
-
-        return await query.ToListAsync(cancellationToken);
+        return await _dbContext.Set<T>().ToListAsync(cancellationToken);
     }
 
-    public async Task<IReadOnlyList<T>> FindAsync(
-        Expression<Func<T, bool>> predicate,
-        CancellationToken cancellationToken = default,
-        params Expression<Func<T, object>>[] includes)
+    public async Task<T> AddAsync(T entity, CancellationToken cancellationToken)
     {
-        IQueryable<T> query = _dbSet.Where(predicate);
+        await _dbContext.Set<T>().AddAsync(entity, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
-        foreach (var include in includes)
-        {
-            query = query.Include(include);
-        }
-
-        return await query.ToListAsync(cancellationToken);
-    }
-
-    public async Task<T> AddAsync(T entity, CancellationToken cancellationToken = default)
-    {
-        if (entity == null) throw new ArgumentNullException(nameof(entity));
-        await _dbSet.AddAsync(entity, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
         return entity;
     }
 
-    public async Task UpdateAsync(T entity, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(T entity, CancellationToken cancellationToken)
     {
-        if (entity == null) throw new ArgumentNullException(nameof(entity));
-        _dbSet.Update(entity);
-        await _context.SaveChangesAsync(cancellationToken);
+        _dbContext.Entry(entity).State = EntityState.Modified;
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(T entity, CancellationToken cancellationToken)
     {
-        if (entity == null) throw new ArgumentNullException(nameof(entity));
-        _dbSet.Remove(entity);
-        await _context.SaveChangesAsync(cancellationToken);
+        _dbContext.Set<T>().Remove(entity);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }
