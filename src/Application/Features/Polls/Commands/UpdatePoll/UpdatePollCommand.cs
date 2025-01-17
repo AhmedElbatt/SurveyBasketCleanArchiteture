@@ -1,24 +1,25 @@
-﻿using Application.Contracts.Repositories.Persistance;
+﻿using Application.Errors;
 
 namespace Application.Features.Polls.Commands.UpdatePoll;
-public record UpdatePollCommand(int Id, string Title, string Summary, DateOnly StartsAt, DateOnly EndsAt) : IRequest;
+public record UpdatePollCommand(int Id, string Title, string Summary, DateOnly StartsAt, DateOnly EndsAt) : IRequest<Result>;
 
-public class UpdatePollCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<UpdatePollCommand>
+public class UpdatePollCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<UpdatePollCommand, Result>
 {
     private readonly IRepository<Poll> _pollRepository = pollRepository;
 
-    public async Task Handle(UpdatePollCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UpdatePollCommand request, CancellationToken cancellationToken)
     {
         var poll = await _pollRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (poll == null)
-            throw new NullReferenceException($"Poll with Id: {request.Id} not found.");
+            return Result.Failure(PollErrors.PollNotFound);
 
         var titleExists = await _pollRepository.AnyAsync(x => x.Title == request.Title && x.Id != request.Id, cancellationToken);
         if (titleExists)
-            throw new Exception("Duplicate poll titles not possible");
+            return Result.Failure(PollErrors.DuplicatedPollsNotAllowed);
 
         await _pollRepository.UpdateAsync(request.Adapt(poll), cancellationToken);
+        return Result.Success();
     }
 }
 

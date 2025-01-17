@@ -1,19 +1,21 @@
-﻿using Application.Contracts.Repositories.Persistance;
+﻿using Application.Errors;
 
 namespace Application.Features.Polls.Commands.TogglePublish;
-public record TogglePublishCommand(int Id) : IRequest;
+public record TogglePublishCommand(int Id) : IRequest<Result>;
 
-public record TogglePublishCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<TogglePublishCommand>
+public class TogglePublishCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<TogglePublishCommand, Result>
 {
     private readonly IRepository<Poll> _pollRepository = pollRepository;
 
-    public async Task Handle(TogglePublishCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(TogglePublishCommand request, CancellationToken cancellationToken)
     {
         var pollToUpdate = await _pollRepository.GetByIdAsync(request.Id);
         if (pollToUpdate == null)
-            throw new NullReferenceException($"Poll with Id: {request.Id} not found.");
+            return Result.Failure(PollErrors.PollNotFound);
 
         pollToUpdate.IsPublished = !pollToUpdate.IsPublished;
         await _pollRepository.UpdateAsync(pollToUpdate, cancellationToken);
+
+        return Result.Success();
     }
 }

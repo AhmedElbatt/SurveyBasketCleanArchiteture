@@ -1,20 +1,21 @@
-﻿using Application.Contracts.Repositories.Persistance;
-using Domain.Entities;
+﻿using Application.Errors;
 
 namespace Application.Features.Polls.Commands.DeletePoll;
-public record DeletePollCommand(int Id) : IRequest;
+public record DeletePollCommand(int Id) : IRequest<Result>;
 
-public class DeletePollCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<DeletePollCommand>
+public class DeletePollCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<DeletePollCommand, Result>
 {
     private readonly IRepository<Poll> _pollRepository = pollRepository;
 
-    public async Task Handle(DeletePollCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(DeletePollCommand request, CancellationToken cancellationToken)
     {
         var pollToDelete = await _pollRepository.GetByIdAsync(request.Id, cancellationToken);
 
         if (pollToDelete == null)
-            throw new NullReferenceException($"Poll with Id: {request.Id} not found.");
+           return Result.Failure(PollErrors.PollNotFound);
 
         await _pollRepository.DeleteAsync(pollToDelete, cancellationToken);
+        return Result.Success();
+
     }
 }

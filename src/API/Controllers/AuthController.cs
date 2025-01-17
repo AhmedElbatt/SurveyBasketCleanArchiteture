@@ -1,6 +1,5 @@
-﻿using Application.Features.Auth.Commands.Login;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Application.Abstractions;
+using Application.Features.Auth.Commands.Login;
 
 namespace API.Controllers;
 [Route("[controller]")]
@@ -12,7 +11,7 @@ public class AuthController(IMediator mediator) : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> LoginAsync(LoginCommand request, CancellationToken cancellationToken)
     {
-        var response = await _mediator.Send(request, cancellationToken);
-        return Ok(response);
+        var result = await _mediator.Send(request, cancellationToken);
+        return result.IsSuccess ? Ok(result.Payload) : result.ToProblem();
     }
 }

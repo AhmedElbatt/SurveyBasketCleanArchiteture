@@ -3,5 +3,5 @@
 namespace Application.Contracts.Services.Authentication;
 public interface IAuthService
 {
-    Task<LoginResponse> Login(string email, string password);
+    Task<Result<LoginResponse>> Login(string email, string password);
 }

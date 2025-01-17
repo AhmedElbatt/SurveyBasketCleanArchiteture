@@ -1,13 +1,11 @@
-﻿using Application.Contracts.Repositories.Persistance;
+﻿namespace Application.Features.Polls.Requests.GetPoll;
+public record GetPollQuery(int Id) : IRequest<Result<GetPollResponse>>;
 
-namespace Application.Features.Polls.Requests.GetPoll;
-public record GetPollQuery(int Id) : IRequest<GetPollResponse>;
-
-public class GetPollQueryHandler(IRepository<Poll> pollRepository) : IRequestHandler<GetPollQuery, GetPollResponse>
+public class GetPollQueryHandler(IRepository<Poll> pollRepository) : IRequestHandler<GetPollQuery, Result<GetPollResponse>>
 {
     private readonly IRepository<Poll> _pollRepository = pollRepository;
 
-    public async Task<GetPollResponse> Handle(GetPollQuery request, CancellationToken cancellationToken)
+    public async Task<Result<GetPollResponse>> Handle(GetPollQuery request, CancellationToken cancellationToken)
     {
         var poll = await _pollRepository.GetByIdAsync(request.Id, cancellationToken);
         return poll.Adapt<GetPollResponse>();
