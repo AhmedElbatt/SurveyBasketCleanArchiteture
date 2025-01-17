@@ -1,9 +1,9 @@
 ﻿using System.Linq.Expressions;
 
-namespace Application.Contracts.Persistance;
+namespace Application.Contracts.Repositories.Persistance;
 public interface IRepository<T> where T : class
 {
-    Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken= default);
+    Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 
     Task<T> GetAsync(Expression<Func<T, bool>>? predicate = null,
                                   bool disableTracking = true,

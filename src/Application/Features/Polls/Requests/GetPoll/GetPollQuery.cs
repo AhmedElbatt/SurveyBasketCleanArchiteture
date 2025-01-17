@@ -1,4 +1,6 @@
-﻿namespace Application.Features.Polls.Requests.GetPoll;
+﻿using Application.Contracts.Repositories.Persistance;
+
+namespace Application.Features.Polls.Requests.GetPoll;
 public record GetPollQuery(int Id) : IRequest<GetPollResponse>;
 
 public class GetPollQueryHandler(IRepository<Poll> pollRepository) : IRequestHandler<GetPollQuery, GetPollResponse>

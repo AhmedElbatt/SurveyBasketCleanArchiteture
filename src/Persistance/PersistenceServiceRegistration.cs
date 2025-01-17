@@ -1,4 +1,4 @@
-﻿using Application.Contracts.Persistance;
+﻿using Application.Contracts.Repositories.Persistance;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistance.Repositories;
@@ -16,7 +16,8 @@ public static class PersistenceServiceRegistration
 
     private static IServiceCollection AddEntityFrameworkConfig(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        var connectionString = configuration.GetConnectionString("DefaultConnection") 
+                                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
         return services;
     }

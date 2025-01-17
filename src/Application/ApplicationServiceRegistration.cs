@@ -1,7 +1,12 @@
-﻿using FluentValidation.AspNetCore;
+﻿using Application.Settings;
+using FluentValidation.AspNetCore;
 using MapsterMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 namespace Application;
 public static class ApplicationServiceRegistration
@@ -42,6 +47,4 @@ public static class ApplicationServiceRegistration
 
         return services;
     }
-
-
 }

@@ -1,4 +1,6 @@
-﻿namespace Application.Features.Polls.Commands.UpdatePoll;
+﻿using Application.Contracts.Repositories.Persistance;
+
+namespace Application.Features.Polls.Commands.UpdatePoll;
 public record UpdatePollCommand(int Id, string Title, string Summary, DateOnly StartsAt, DateOnly EndsAt) : IRequest;
 
 public class UpdatePollCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<UpdatePollCommand>

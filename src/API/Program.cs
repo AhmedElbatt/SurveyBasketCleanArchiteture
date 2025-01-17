@@ -1,5 +1,7 @@
 
 using Application;
+using Domain.Entities;
+using Infrastructure;
 using Persistance;
 
 namespace API;
@@ -11,11 +13,15 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        //builder.Services.AddIdentityApiEndpoints<ApplicationUser>().AddEntityFrameworkStores<ApplicationDbContext>();
 
         builder.Services.AddControllers();
+
         builder.Services
+            .AddApplicationDependencies()
             .AddPersistanceDependencies(builder.Configuration)
-            .AddApplicationDependencies();
+            .AddInfrastructureDependencies(builder.Configuration);
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -33,6 +39,7 @@ public class Program
 
         app.UseAuthorization();
 
+        //app.MapIdentityApi<ApplicationUser>();
 
         app.MapControllers();
 

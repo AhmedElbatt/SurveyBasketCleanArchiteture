@@ -1,4 +1,6 @@
-﻿namespace Application.Features.Polls.Commands.CreatePoll;
+﻿using Application.Contracts.Repositories.Persistance;
+
+namespace Application.Features.Polls.Commands.CreatePoll;
 public record CreatePollCommand(string Title, string Summary, DateOnly StartsAt, DateOnly EndsAt) : IRequest<CreatePollResponse>;
 
 public class CreatePollCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<CreatePollCommand, CreatePollResponse>

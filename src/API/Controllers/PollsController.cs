@@ -5,11 +5,13 @@ using Application.Features.Polls.Commands.UpdatePoll;
 using Application.Features.Polls.Requests.GetPoll;
 using Application.Features.Polls.Requests.GetPollsList;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class PollsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;

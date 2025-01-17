@@ -1,4 +1,6 @@
-﻿namespace Application.Features.Polls.Commands.TogglePublish;
+﻿using Application.Contracts.Repositories.Persistance;
+
+namespace Application.Features.Polls.Commands.TogglePublish;
 public record TogglePublishCommand(int Id) : IRequest;
 
 public record TogglePublishCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<TogglePublishCommand>

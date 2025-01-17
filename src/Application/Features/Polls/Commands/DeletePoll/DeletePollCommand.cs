@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Contracts.Repositories.Persistance;
+using Domain.Entities;
 
 namespace Application.Features.Polls.Commands.DeletePoll;
 public record DeletePollCommand(int Id) : IRequest;
