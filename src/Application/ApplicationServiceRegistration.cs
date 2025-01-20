@@ -1,22 +1,23 @@
-﻿using Application.Settings;
+﻿using Application.Errors;
 using FluentValidation.AspNetCore;
 using MapsterMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
-using System.Text;
 
 namespace Application;
 public static class ApplicationServiceRegistration
 {
     public static IServiceCollection AddApplicationDependencies(this IServiceCollection services)
     {
-        return services
+         services
             .AddMediatRConfig()
             .AddMapsterConfig()
             .AddFluentValidationConfig();
+
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
+
+        return services;
     }
 
     private static IServiceCollection AddMediatRConfig(this IServiceCollection services)

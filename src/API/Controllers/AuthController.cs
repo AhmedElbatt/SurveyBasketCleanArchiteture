@@ -11,6 +11,7 @@ public class AuthController(IMediator mediator) : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> LoginAsync(LoginCommand request, CancellationToken cancellationToken)
     {
+        //throw new Exception("Test Exceptions");
         var result = await _mediator.Send(request, cancellationToken);
         return result.IsSuccess ? Ok(result.Payload) : result.ToProblem();
     }

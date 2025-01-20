@@ -40,8 +40,10 @@ public class Program
         app.UseAuthorization();
 
         //app.MapIdentityApi<ApplicationUser>();
-
+     
         app.MapControllers();
+
+        app.UseExceptionHandler();
 
         app.Run();
     }
