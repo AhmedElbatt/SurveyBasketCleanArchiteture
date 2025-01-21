@@ -110,9 +110,16 @@ public class Repository<T> : IRepository<T> where T : class
         return entity;
     }
 
-    public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
+    //public async Task DeleteAsync(T entity, CancellationToken cancellationToken = default)
+    //{
+    //    _dbSet.Remove(entity);
+    //    await _dbContext.SaveChangesAsync(cancellationToken);
+    //}
+
+    public async Task<T> DeleteAsync(T entity, CancellationToken cancellationToken = default)
     {
-        _dbSet.Remove(entity);
+        _dbContext.Entry(entity).State = EntityState.Modified;
         await _dbContext.SaveChangesAsync(cancellationToken);
+        return entity;
     }
 }

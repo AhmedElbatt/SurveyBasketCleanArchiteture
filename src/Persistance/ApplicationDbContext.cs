@@ -16,6 +16,15 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+        var cascadeFkeys = modelBuilder.Model
+                                        .GetEntityTypes()
+                                        .SelectMany(x => x.GetForeignKeys())
+                                        .Where(x => !x.IsOwnership && x.DeleteBehavior == DeleteBehavior.Cascade);
+
+        foreach (var fk in cascadeFkeys)
+            fk.DeleteBehavior = DeleteBehavior.Restrict;
+
         base.OnModelCreating(modelBuilder);
     }
 
@@ -25,7 +34,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         var entries = ChangeTracker.Entries<AuditableEntity>();
         foreach (var entry in entries)
         {
-            if(entry.State == EntityState.Added)
+            if (entry.State == EntityState.Added)
             {
                 entry.Entity.CreatedAt = DateTime.UtcNow;
                 entry.Entity.CreatedById = loggedInUser;
@@ -33,8 +42,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
             if (entry.State == EntityState.Modified)
             {
-                entry.Entity.LastUpdatedAt = DateTime.UtcNow;
-                entry.Entity.LastUpdatedById = loggedInUser;
+                if (entry.Entity.IsDeleted)
+                {
+                    entry.Entity.DeletedAt = DateTime.UtcNow;
+                    entry.Entity.DeletedById = loggedInUser;
+                }
+                else
+                {
+                    entry.Entity.LastUpdatedAt = DateTime.UtcNow;
+                    entry.Entity.LastUpdatedById = loggedInUser;
+                }
             }
         }
 

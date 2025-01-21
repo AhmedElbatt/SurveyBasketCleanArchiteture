@@ -14,7 +14,7 @@ public class DeletePollCommandHandler(IRepository<Poll> pollRepository) : IReque
         if (pollToDelete == null)
            return Result.Failure(PollErrors.PollNotFound);
 
-        await _pollRepository.DeleteAsync(pollToDelete, cancellationToken);
+        await _pollRepository.DeleteAsync(pollToDelete.Delete(), cancellationToken);
         return Result.Success();
 
     }

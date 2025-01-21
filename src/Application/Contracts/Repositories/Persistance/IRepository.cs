@@ -28,5 +28,6 @@ public interface IRepository<T> where T : class
 
     Task<List<T>> AddRangeAsync(List<T> entities, CancellationToken cancellationToken = default);
     Task<T> UpdateAsync(T entity, CancellationToken cancellationToken = default);
-    Task DeleteAsync(T entity, CancellationToken cancellationToken = default);
+    Task<T> DeleteAsync(T entity, CancellationToken cancellationToken = default);
+    //Task DeleteAsync(T entity, CancellationToken cancellationToken = default);
 }

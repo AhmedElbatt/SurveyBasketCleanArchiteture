@@ -18,7 +18,7 @@ public class UpdatePollCommandHandler(IRepository<Poll> pollRepository) : IReque
         if (titleExists)
             return Result.Failure(PollErrors.DuplicatedPollsNotAllowed);
 
-        await _pollRepository.UpdateAsync(request.Adapt(poll), cancellationToken);
+        await _pollRepository.UpdateAsync(poll.Update(request.Adapt<PollToUpdate>()), cancellationToken);
         return Result.Success();
     }
 }

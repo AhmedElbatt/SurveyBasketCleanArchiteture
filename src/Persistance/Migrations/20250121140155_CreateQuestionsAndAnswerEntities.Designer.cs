@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistance;
 
@@ -11,9 +12,11 @@ using Persistance;
 namespace Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250121140155_CreateQuestionsAndAnswerEntities")]
+    partial class CreateQuestionsAndAnswerEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,16 +45,7 @@ namespace Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedById")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdatedAt")
@@ -66,8 +60,6 @@ namespace Persistance.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("DeletedById");
 
                     b.HasIndex("LastUpdatedById");
 
@@ -167,17 +159,8 @@ namespace Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedById")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateOnly>("EndsAt")
                         .HasColumnType("date");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPublished")
                         .HasColumnType("bit");
@@ -204,8 +187,6 @@ namespace Persistance.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("DeletedById");
 
                     b.HasIndex("LastUpdatedById");
 
@@ -235,16 +216,7 @@ namespace Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DeletedById")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastUpdatedAt")
@@ -259,8 +231,6 @@ namespace Persistance.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedById");
-
-                    b.HasIndex("DeletedById");
 
                     b.HasIndex("LastUpdatedById");
 
@@ -411,10 +381,6 @@ namespace Persistance.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.ApplicationUser", "DeletedBy")
-                        .WithMany()
-                        .HasForeignKey("DeletedById");
-
                     b.HasOne("Domain.Entities.ApplicationUser", "LastUpdatedBy")
                         .WithMany()
                         .HasForeignKey("LastUpdatedById");
@@ -426,8 +392,6 @@ namespace Persistance.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
-
-                    b.Navigation("DeletedBy");
 
                     b.Navigation("LastUpdatedBy");
 
@@ -442,17 +406,11 @@ namespace Persistance.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.ApplicationUser", "DeletedBy")
-                        .WithMany()
-                        .HasForeignKey("DeletedById");
-
                     b.HasOne("Domain.Entities.ApplicationUser", "LastUpdatedBy")
                         .WithMany()
                         .HasForeignKey("LastUpdatedById");
 
                     b.Navigation("CreatedBy");
-
-                    b.Navigation("DeletedBy");
 
                     b.Navigation("LastUpdatedBy");
                 });
@@ -465,10 +423,6 @@ namespace Persistance.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.ApplicationUser", "DeletedBy")
-                        .WithMany()
-                        .HasForeignKey("DeletedById");
-
                     b.HasOne("Domain.Entities.ApplicationUser", "LastUpdatedBy")
                         .WithMany()
                         .HasForeignKey("LastUpdatedById");
@@ -480,8 +434,6 @@ namespace Persistance.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
-
-                    b.Navigation("DeletedBy");
 
                     b.Navigation("LastUpdatedBy");
 

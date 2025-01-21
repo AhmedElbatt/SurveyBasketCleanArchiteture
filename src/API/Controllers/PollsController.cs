@@ -18,8 +18,8 @@ public class PollsController(IMediator mediator) : ControllerBase
     [HttpGet("")]
     public async Task<IActionResult> GetList(int id, CancellationToken cancellationToken)
     {
-        var result = await _mediator.Send(new GetPollsListQuery(), cancellationToken);
-        return Ok(result);
+        var result = await _mediator.Send(new GetPollListQuery(), cancellationToken);
+        return Ok(result.Payload);
     }
 
     [HttpGet("{id}")]

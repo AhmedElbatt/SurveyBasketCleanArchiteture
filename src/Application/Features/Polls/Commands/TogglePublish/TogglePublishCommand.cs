@@ -13,8 +13,7 @@ public class TogglePublishCommandHandler(IRepository<Poll> pollRepository) : IRe
         if (pollToUpdate == null)
             return Result.Failure(PollErrors.PollNotFound);
 
-        pollToUpdate.IsPublished = !pollToUpdate.IsPublished;
-        await _pollRepository.UpdateAsync(pollToUpdate, cancellationToken);
+        await _pollRepository.UpdateAsync(pollToUpdate.TogglePublishStatus(), cancellationToken);
 
         return Result.Success();
     }
