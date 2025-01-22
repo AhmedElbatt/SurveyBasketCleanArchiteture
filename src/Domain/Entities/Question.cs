@@ -25,4 +25,17 @@ public sealed class Question : AuditableEntity
             Answers = answers
         };
     }
+
+    public Question ToggleActiveStatus()
+    {
+        IsActive = !IsActive;
+        return this;
+    }
+
+    public Question Update(string content, ICollection<Answer> answers)
+    {
+        Content = content;
+        Answers = answers;
+        return this;
+    }
 }

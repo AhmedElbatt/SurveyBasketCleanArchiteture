@@ -12,4 +12,16 @@ public sealed class Answer : AuditableEntity
     public int QuestionId { get; set; }
 
     public Question Question { get; set; } = default!;
+
+    public Answer Activate()
+    {
+        IsActive = true;
+        return this;
+    }
+
+    public Answer DeActivate()
+    {
+        IsActive = false;
+        return this;
+    }
 }

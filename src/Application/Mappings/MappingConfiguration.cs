@@ -1,6 +1,4 @@
-﻿using Application.Features.Questions.Commands.CreateQuestion;
-
-namespace Application.Mappings;
+﻿namespace Application.Mappings;
 public class MappingConfiguration : IRegister
 {
     public void Register(TypeAdapterConfig config)

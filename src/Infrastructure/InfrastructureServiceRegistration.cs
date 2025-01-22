@@ -1,9 +1,7 @@
 ﻿using Application.Contracts.Services.Authentication;
 using Application.Settings;
-using Domain.Entities;
 using Infrastructure.Services.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;

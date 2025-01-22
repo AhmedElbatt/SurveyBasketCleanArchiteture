@@ -1,7 +1,7 @@
-﻿namespace Application.Features.Questions.Commands.CreateQuestion;
-public class CreateQuestionRequestValidator : AbstractValidator<CreateQuestionRequest>
+﻿namespace Application.Features.Questions.Shared;
+public class QuestionRequestValidator : AbstractValidator<QuestionRequest>
 {
-    public CreateQuestionRequestValidator()
+    public QuestionRequestValidator()
     {
         RuleFor(x => x.Content)
          .Length(3, 1000);

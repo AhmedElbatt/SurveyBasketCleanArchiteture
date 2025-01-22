@@ -18,7 +18,7 @@ public class CreateQuestionCommandHandler(IRepository<Poll> pollRepository, IRep
 
         var questionExists = await _questionRepository.AnyAsync(x => x.PollId == request.PollId && x.Content == request.Content, cancellationToken);
         if (questionExists)
-            return QuestionErrors.DuplicatedPollsNotAllowed;
+            return QuestionErrors.DuplicatedQuestionContent;
 
         var questionToCreate = Question.Create(request.PollId, request.Content, request.Answers.Select(answer => new Answer { Content = answer }).ToList());
         var question = await _questionRepository.AddAsync(questionToCreate, cancellationToken);
