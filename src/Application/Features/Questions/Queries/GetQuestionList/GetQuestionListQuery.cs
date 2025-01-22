@@ -4,10 +4,10 @@ using Application.Features.Questions.Shared;
 namespace Application.Features.Questions.Queries.GetQuestionList;
 public record GetQuestionListQuery(int PollId) : IRequest<Result<List<QuestionResponse>>>;
 
-public class GetQuestionListQueryHandler(IRepository<Poll> pollRepository, IQuestionRepository questionRepository) : IRequestHandler<GetQuestionListQuery, Result<List<QuestionResponse>>>
+public class GetQuestionListQueryHandler(IRepository<Poll> pollRepository, IRepository<Question> questionRepository) : IRequestHandler<GetQuestionListQuery, Result<List<QuestionResponse>>>
 {
     private readonly IRepository<Poll> _pollRepository = pollRepository;
-    private readonly IQuestionRepository _questionRepository = questionRepository;
+    private readonly IRepository<Question> _questionRepository = questionRepository;
 
     public async Task<Result<List<QuestionResponse>>> Handle(GetQuestionListQuery request, CancellationToken cancellationToken)
     {
@@ -15,7 +15,9 @@ public class GetQuestionListQueryHandler(IRepository<Poll> pollRepository, IQues
         if (!pollExists)
             return PollErrors.PollNotFound;
 
-        return await _questionRepository.GetListAsync(request.PollId, cancellationToken);
+        var questions = await _questionRepository.GetListAsync<QuestionResponse>(x => x.PollId == request.PollId, cancellationToken);
+
+        return questions.ToList();
     }
 }
 

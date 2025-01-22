@@ -43,6 +43,28 @@ public class Repository<T> : IRepository<T> where T : class
         return query.FirstOrDefault();
     }
 
+
+    public Task<Q> GetAsync<Q>(Expression<Func<T, bool>>? predicate = null, bool disableTracking = true, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] includeProperties)
+    {
+        IQueryable<T> query = _dbSet;
+
+        if (disableTracking)
+            query = query.AsNoTracking();
+
+        if (predicate != null)
+            query = query.Where(predicate);
+
+        if (includeProperties.Any())
+        {
+            foreach (var property in includeProperties)
+            {
+                query = query.Include(property);
+            }
+        }
+
+        return query.ProjectToType<Q>().SingleOrDefaultAsync();
+    }
+
     public async Task<IEnumerable<T>> GetListAsync(CancellationToken cancellationToken = default)
     {
         return await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
@@ -51,6 +73,12 @@ public class Repository<T> : IRepository<T> where T : class
     public async Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
     {
         return await _dbSet.Where(predicate).AsNoTracking().ToListAsync(cancellationToken);
+    }
+
+
+    public async Task<IEnumerable<Q>> GetListAsync<Q>(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
+    {
+        return await _dbSet.Where(predicate).AsNoTracking().ProjectToType<Q>().ToListAsync(cancellationToken);
     }
 
     public async Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, bool disableTracking = true, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] includeProperties)
@@ -122,4 +150,5 @@ public class Repository<T> : IRepository<T> where T : class
         await _dbContext.SaveChangesAsync(cancellationToken);
         return entity;
     }
+
 }

@@ -9,8 +9,16 @@ public interface IRepository<T> where T : class
                                   bool disableTracking = true,
                                    CancellationToken cancellationToken = default,
                                   params Expression<Func<T, object>>[] includeProperties);
+
+    Task<Q> GetAsync<Q>(Expression<Func<T, bool>>? predicate = null,
+                              bool disableTracking = true,
+                               CancellationToken cancellationToken = default,
+                              params Expression<Func<T, object>>[] includeProperties);
+
     Task<IEnumerable<T>> GetListAsync(CancellationToken cancellationToken = default);
     Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
+
+    Task<IEnumerable<Q>> GetListAsync<Q>(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
     Task<IEnumerable<T>> GetListAsync(Expression<Func<T, bool>>? predicate = null,
                                   Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
                                   bool disableTracking = true,

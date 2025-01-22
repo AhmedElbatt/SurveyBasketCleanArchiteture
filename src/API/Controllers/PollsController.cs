@@ -3,6 +3,7 @@ using Application.Features.Polls.Commands.CreatePoll;
 using Application.Features.Polls.Commands.DeletePoll;
 using Application.Features.Polls.Commands.TogglePublish;
 using Application.Features.Polls.Commands.UpdatePoll;
+using Application.Features.Polls.Queries.GetCurtrentPolls;
 using Application.Features.Polls.Requests.GetPoll;
 using Application.Features.Polls.Requests.GetPollsList;
 
@@ -19,6 +20,13 @@ public class PollsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetList(int id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetPollListQuery(), cancellationToken);
+        return Ok(result.Payload);
+    }
+
+    [HttpGet("get-current-polls")]
+    public async Task<IActionResult> GetCurrentPolls(int id, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetCurrentPollsQuery(), cancellationToken);
         return Ok(result.Payload);
     }
 
