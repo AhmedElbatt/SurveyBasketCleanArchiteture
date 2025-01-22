@@ -12,7 +12,7 @@ public sealed class Poll : AuditableEntity
     public DateOnly EndsAt { get; set; }
 
     public ICollection<Question> Questions { get; set; } = [];
-
+    public ICollection<Vote> Votes { get; set; } = [];
     public static Poll Create(string title, string summary, DateOnly startsAt, DateOnly endsAt)
     {
         return new Poll

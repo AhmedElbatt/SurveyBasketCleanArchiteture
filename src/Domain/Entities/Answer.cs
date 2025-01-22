@@ -13,6 +13,8 @@ public sealed class Answer : AuditableEntity
 
     public Question Question { get; set; } = default!;
 
+    public ICollection<VoteAnswer> VoteAnswers { get; set; } = [];
+
     public Answer Activate()
     {
         IsActive = true;
