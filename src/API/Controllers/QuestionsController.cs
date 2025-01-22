@@ -2,6 +2,7 @@
 using Application.Features.Questions.Commands.CreateQuestion;
 using Application.Features.Questions.Commands.ToggleQuestionStatus;
 using Application.Features.Questions.Commands.UpdateQuestion;
+using Application.Features.Questions.Queries.GetAvilableQuestions;
 using Application.Features.Questions.Queries.GetQuestion;
 using Application.Features.Questions.Queries.GetQuestionList;
 using Application.Features.Questions.Shared;
@@ -18,6 +19,13 @@ public class QuestionsController(IMediator mediator) : ControllerBase
     public async Task<IActionResult> GetQuestions([FromRoute] int pollId)
     {
         var result = await _mediator.Send(new GetQuestionListQuery(pollId));
+        return result.IsSuccess ? Ok(result.Payload) : result.ToProblem();
+    }
+
+    [HttpGet("get-available-questions")]
+    public async Task<IActionResult> GetAvailableQuestions([FromRoute] int pollId)
+    {
+        var result = await _mediator.Send(new GetAvilableQuestionsQuery(pollId));
         return result.IsSuccess ? Ok(result.Payload) : result.ToProblem();
     }
 

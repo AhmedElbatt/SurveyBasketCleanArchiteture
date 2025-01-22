@@ -25,6 +25,12 @@ public interface IRepository<T> where T : class
                                   CancellationToken cancellationToken = default,
                                   params Expression<Func<T, object>>[] includeProperties);
 
+    Task<IEnumerable<Q>> GetListAsync<Q>(Expression<Func<T, bool>>? predicate = null,
+                              Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+                              bool disableTracking = true,
+                              CancellationToken cancellationToken = default,
+                              params Expression<Func<T, object>>[] includeProperties);
+
     //Task<PageResultSet<T>> GetListAsync(Expression<Func<T, bool>> predicate, int pageNumber, int pageSize);
     //Task<PageResultSet<T>> GetListAsync(int pageNumber, int pageSize, Expression<Func<T, bool>>? predicate = null,
     //                      Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,

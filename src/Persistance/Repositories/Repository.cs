@@ -105,6 +105,29 @@ public class Repository<T> : IRepository<T> where T : class
 
     }
 
+    public async Task<IEnumerable<Q>> GetListAsync<Q>(Expression<Func<T, bool>>? predicate = null, Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, bool disableTracking = true, CancellationToken cancellationToken = default, params Expression<Func<T, object>>[] includeProperties)
+    {
+        IQueryable<T> query = _dbSet;
+
+        if (disableTracking)
+            query = query.AsNoTracking();
+
+        if (predicate != null)
+            query = query.Where(predicate);
+
+        if (includeProperties.Any())
+        {
+            foreach (var property in includeProperties)
+            {
+                query = query.Include(property);
+            }
+        }
+
+        return orderBy != null
+               ? await orderBy(query).AsNoTracking().ProjectToType<Q>().ToListAsync(cancellationToken)
+               : await query.AsNoTracking().ProjectToType<Q>().ToListAsync(cancellationToken);
+    }
+
     public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
     {
         return await _dbSet.AnyAsync(predicate, cancellationToken);
@@ -150,5 +173,4 @@ public class Repository<T> : IRepository<T> where T : class
         await _dbContext.SaveChangesAsync(cancellationToken);
         return entity;
     }
-
 }
