@@ -13,8 +13,8 @@ public class CreatePollCommandHandler(IRepository<Poll> pollRepository) : IReque
         if (titleExists)
             return PollErrors.DuplicatedPollsNotAllowed;
 
-
-        var response = await _pollRepository.AddAsync(Poll.Create(request.Adapt<PollToCreate>()), cancellationToken);
+        var pollToCreate = Poll.Create(request.Title, request.Summary, request.StartsAt, request.EndsAt);
+        var response = await _pollRepository.AddAsync(pollToCreate, cancellationToken);
         return response.Adapt<CreatePollResponse>();
     }
 }

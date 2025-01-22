@@ -1,10 +1,7 @@
 ﻿using Domain.Common;
-using Mapster;
 
 namespace Domain.Entities;
 
-public record PollToCreate(string Title, string Summary, DateOnly StartsAt, DateOnly EndsAt);
-public record PollToUpdate(int Id, string Title, string Summary, DateOnly StartsAt, DateOnly EndsAt);
 public sealed class Poll : AuditableEntity
 {
     public int Id { get; set; }
@@ -16,14 +13,24 @@ public sealed class Poll : AuditableEntity
 
     public ICollection<Question> Questions { get; set; } = [];
 
-    public static Poll Create(PollToCreate pollToCreate)
+    public static Poll Create(string title, string summary, DateOnly startsAt, DateOnly endsAt)
     {
-        return pollToCreate.Adapt<Poll>();
+        return new Poll
+        {
+            Title = title,
+            Summary = summary,
+            StartsAt = startsAt,
+            EndsAt = endsAt
+        };
     }
 
-    public Poll Update(PollToUpdate pollToUpdate)
+    public Poll Update(string title, string summary, DateOnly startsAt, DateOnly endsAt)
     {
-        return pollToUpdate.Adapt(this);
+        Title = title;
+        Summary = summary;
+        StartsAt = startsAt;
+        EndsAt = endsAt;
+        return this;
     }
 
     public Poll Delete()

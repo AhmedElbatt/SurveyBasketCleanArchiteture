@@ -14,4 +14,15 @@ public sealed class Question : AuditableEntity
     public Poll Poll { get; set; } = default!;
 
     public ICollection<Answer> Answers { get; set; } = [];
+
+
+    public static Question Create(int pollId, string content, ICollection<Answer> answers)
+    {
+        return new Question
+        {
+            PollId = pollId,
+            Content = content,
+            Answers = answers
+        };
+    }
 }
