@@ -1,4 +1,5 @@
-﻿using Domain.Common;
+﻿using Application.Extensions;
+using Domain.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Reflection;
@@ -32,7 +33,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var loggedInUser = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        var loggedInUser = _httpContextAccessor.HttpContext?.User.GetUserId()!;
         var entries = ChangeTracker.Entries<AuditableEntity>();
         foreach (var entry in entries)
         {

@@ -1,16 +1,22 @@
 ﻿using Application.Errors;
 using Application.Features.Questions.Shared;
 
-namespace Application.Features.Questions.Queries.GetAvilableQuestions;
-public record GetAvilableQuestionsQuery(int PollId) : IRequest<Result<List<QuestionResponse>>>;
+namespace Application.Features.Votes.Queries.GetAvilableQuestions;
+public record GetVoteQuestionsQuery(int PollId, string UserId) : IRequest<Result<List<QuestionResponse>>>;
 
-public class GetAvilableQuestionsQueryHandler(IRepository<Poll> pollRepository, IRepository<Question> questionRepository) : IRequestHandler<GetAvilableQuestionsQuery, Result<List<QuestionResponse>>>
+public class GetVoteQuestionsQueryHandler(IRepository<Poll> pollRepository, IRepository<Question> questionRepository, IRepository<Vote> voteRepository) : IRequestHandler<GetVoteQuestionsQuery, Result<List<QuestionResponse>>>
 {
     private readonly IRepository<Poll> _pollRepository = pollRepository;
     private readonly IRepository<Question> _questionRepository = questionRepository;
+    private readonly IRepository<Vote> _voteRepository = voteRepository;
 
-    public async Task<Result<List<QuestionResponse>>> Handle(GetAvilableQuestionsQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<QuestionResponse>>> Handle(GetVoteQuestionsQuery request, CancellationToken cancellationToken)
     {
+        var voteExists = await _voteRepository.AnyAsync(x => x.PollId == request.PollId && x.UserId == request.UserId);
+        if (voteExists)
+            return VoteErrors.DuplicatedVote;
+
+
         var pollExists = await _pollRepository.AnyAsync(x => x.Id == request.PollId
                                                              && !x.IsDeleted
                                                              && x.IsPublished
