@@ -4,12 +4,11 @@ using System.Linq;
 namespace Application.Features.Votes.Commands.AnswerVote;
 public record AnswerVoteCommand(int PollId, string UserId, IEnumerable<AnswerVoteItem> Answers) : IRequest<Result>;
 
-public class AnswerVoteCommandHandler(IRepository<Vote> voteRepository, IRepository<Poll> pollRepository, IRepository<Question> questionRepository, IRepository<Answer> answerRepository) : IRequestHandler<AnswerVoteCommand, Result>
+public class AnswerVoteCommandHandler(IRepository<Vote> voteRepository, IRepository<Poll> pollRepository, IRepository<Question> questionRepository) : IRequestHandler<AnswerVoteCommand, Result>
 {
     private readonly IRepository<Vote> _voteRepository = voteRepository;
     private readonly IRepository<Poll> _pollRepository = pollRepository;
     private readonly IRepository<Question> _questionRepository = questionRepository;
-    private readonly IRepository<Answer> _answerRepository = answerRepository;
 
     public async Task<Result> Handle(AnswerVoteCommand request, CancellationToken cancellationToken)
     {
