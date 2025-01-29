@@ -1,5 +1,4 @@
 ﻿using Application.Errors;
-using System.Linq;
 
 namespace Application.Features.Votes.Commands.AnswerVote;
 public record AnswerVoteCommand(int PollId, string UserId, IEnumerable<AnswerVoteItem> Answers) : IRequest<Result>;
