@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Application.Errors;
+﻿namespace Application.Errors;
 public static class QuestionErrors
 {
     public static readonly Error QuestionNotFound = new Error("QUESTION_NOT_FOUND", "Question not found", StatusCodes.Status404NotFound);

@@ -1,5 +1,4 @@
-﻿using Application.Errors;
-using Application.Features.Questions.Shared;
+﻿using Application.Features.Questions.Shared;
 
 namespace Application.Features.Questions.Queries.GetQuestionList;
 public record GetQuestionListQuery(int PollId) : IRequest<Result<List<QuestionResponse>>>;

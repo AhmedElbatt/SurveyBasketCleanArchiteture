@@ -1,6 +1,4 @@
-﻿using Application.Errors;
-
-namespace Application.Features.Polls.Commands.TogglePublish;
+﻿namespace Application.Features.Polls.Commands.TogglePublish;
 public record TogglePublishCommand(int Id) : IRequest<Result>;
 
 public class TogglePublishCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<TogglePublishCommand, Result>

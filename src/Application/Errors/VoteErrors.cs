@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Application.Errors;
+﻿namespace Application.Errors;
 public static class VoteErrors
 {
     public static readonly Error DuplicatedVote = new Error("VOTE_ALREADY_EXISTS", "Vote already exist for this user", StatusCodes.Status409Conflict);

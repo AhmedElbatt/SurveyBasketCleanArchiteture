@@ -1,5 +1,4 @@
-﻿using Application.Errors;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
 using MapsterMapper;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;

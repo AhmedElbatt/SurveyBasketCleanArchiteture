@@ -1,6 +1,4 @@
-﻿using Application.Errors;
-
-namespace Application.Features.Votes.Commands.AnswerVote;
+﻿namespace Application.Features.Votes.Commands.AnswerVote;
 public record AnswerVoteCommand(int PollId, string UserId, IEnumerable<AnswerVoteItem> Answers) : IRequest<Result>;
 
 public class AnswerVoteCommandHandler(IRepository<Vote> voteRepository, IRepository<Poll> pollRepository, IRepository<Question> questionRepository) : IRequestHandler<AnswerVoteCommand, Result>

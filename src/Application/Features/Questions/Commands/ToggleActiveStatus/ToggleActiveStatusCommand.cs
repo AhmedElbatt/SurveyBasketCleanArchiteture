@@ -1,7 +1,4 @@
-﻿
-using Application.Errors;
-
-namespace Application.Features.Questions.Commands.ToggleQuestionStatus;
+﻿namespace Application.Features.Questions.Commands.ToggleQuestionStatus;
 public record ToggleActiveStatusCommand(int PollId, int QuestionId) : IRequest<Result>;
 
 public class ToggleActiveStatusCommandHandler(IRepository<Question> QuestionRepository) : IRequestHandler<ToggleActiveStatusCommand, Result>

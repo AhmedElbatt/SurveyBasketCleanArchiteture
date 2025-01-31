@@ -1,6 +1,4 @@
-﻿using Application.Errors;
-
-namespace Application.Features.Polls.Commands.UpdatePoll;
+﻿namespace Application.Features.Polls.Commands.UpdatePoll;
 public record UpdatePollCommand(int Id, string Title, string Summary, DateOnly StartsAt, DateOnly EndsAt) : IRequest<Result>;
 
 public class UpdatePollCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<UpdatePollCommand, Result>

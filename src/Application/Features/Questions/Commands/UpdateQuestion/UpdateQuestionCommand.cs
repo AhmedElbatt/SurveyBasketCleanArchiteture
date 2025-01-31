@@ -1,6 +1,4 @@
-﻿using Application.Errors;
-
-namespace Application.Features.Questions.Commands.UpdateQuestion;
+﻿namespace Application.Features.Questions.Commands.UpdateQuestion;
 public record UpdateQuestionCommand(int PollId, int QuestionId, string Content, List<string> Answers) : IRequest<Result>;
 
 public class UpdateQuestionCommandHandler(IRepository<Question> questionRepository) : IRequestHandler<UpdateQuestionCommand, Result>

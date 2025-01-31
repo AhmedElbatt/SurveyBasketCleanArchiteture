@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace Application.Errors;
+﻿namespace Application.Errors;
 public static class PollErrors
 {
     public static readonly Error PollNotFound = new Error("POLL_NOT_FOUND", "Poll not found", StatusCodes.Status404NotFound);

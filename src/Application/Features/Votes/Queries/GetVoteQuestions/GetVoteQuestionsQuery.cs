@@ -1,5 +1,4 @@
-﻿using Application.Errors;
-using Application.Features.Questions.Shared;
+﻿using Application.Features.Questions.Shared;
 
 namespace Application.Features.Votes.Queries.GetAvilableQuestions;
 public record GetVoteQuestionsQuery(int PollId, string UserId) : IRequest<Result<List<QuestionResponse>>>;

@@ -1,6 +1,4 @@
-﻿
-using Application.Errors;
-using Application.Features.Questions.Shared;
+﻿using Application.Features.Questions.Shared;
 
 namespace Application.Features.Questions.Commands.CreateQuestion;
 public record CreateQuestionCommand(int PollId, string Content, List<string> Answers) : IRequest<Result<QuestionResponse>>;

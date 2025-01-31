@@ -1,6 +1,4 @@
-﻿using Application.Errors;
-
-namespace Application.Features.Polls.Commands.DeletePoll;
+﻿namespace Application.Features.Polls.Commands.DeletePoll;
 public record DeletePollCommand(int Id) : IRequest<Result>;
 
 public class DeletePollCommandHandler(IRepository<Poll> pollRepository) : IRequestHandler<DeletePollCommand, Result>
