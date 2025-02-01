@@ -9,6 +9,7 @@ public static class PersistenceServiceRegistration
     public static IServiceCollection AddPersistanceDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>)); 
+        services.AddScoped<IResultRepository, ResultRepository>();
 
         return services
                 .AddEntityFrameworkConfig(configuration);
